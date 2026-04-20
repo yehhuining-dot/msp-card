@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Songti TC'; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Songti TC'; -webkit-text-stroke: #000000; min-height: 17.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="zh-Hant"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;MSP 名片王 - 免費優化版&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src='https://unpkg.com/tesseract.js@v4.0.1/dist/tesseract.min.js'&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body class="bg-slate-100 min-h-screen font-sans"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="bg-blue-800 text-white p-5 shadow-md sticky top-0 z-50 text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1 class="text-xl font-black tracking-widest"&gt;MSP 上濰名片助理&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="p-6 max-w-md mx-auto"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-white rounded-3xl shadow-xl border-4 border-blue-100 p-10 text-center mb-8 active:scale-95 transition-transform relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="file" id="cameraInput" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="text-6xl mb-4"&gt;📸&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="text-2xl font-bold text-blue-700"&gt;拍照判讀&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 mt-2"&gt;請對準名片，保持光線充足&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="loadingBox" class="hidden text-center p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent mb-2"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="text-blue-600 font-bold" id="statusMsg"&gt;分析影像中... 0%&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;canvas id="processCanvas" class="hidden"&gt;&lt;/canvas&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="editForm" class="hidden bg-white rounded-2xl shadow-lg p-6 space-y-5 animate-slide-up"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center space-x-2 border-l-4 border-blue-600 pl-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-lg font-bold text-gray-800"&gt;判讀結果 (可手動修改)&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="space-y-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="text-xs font-bold text-blue-400 uppercase tracking-tighter"&gt;公司名稱&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="resCompany" class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-blue-500 transition-colors"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="text-xs font-bold text-blue-400 uppercase tracking-tighter"&gt;姓名&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="resName" class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-blue-500 transition-colors"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="text-xs font-bold text-blue-400 uppercase tracking-tighter"&gt;電話 / 手機&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="resPhone" class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-blue-500 transition-colors"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="text-xs font-bold text-blue-400 uppercase tracking-tighter"&gt;Email&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="resEmail" class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-blue-500 transition-colors"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="text-xs font-bold text-blue-400 uppercase tracking-tighter"&gt;名片分類&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;select id="resCat" class="w-full mt-2 p-3 bg-slate-50 rounded-xl border-none text-sm font-bold text-gray-600"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option&gt;客戶&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option&gt;供應商&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option&gt;合作夥伴&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option&gt;其他&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button onclick="saveCard()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg active:bg-blue-700"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>確認儲存</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="historyList" class="mt-10 space-y-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h3 class="font-bold text-gray-500 flex justify-between px-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span&gt;最近加入&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="localStorage.clear(); location.reload();" class="text-xs font-normal opacity-50"&gt;清除資料&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="listContainer" class="space-y-3"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const cameraInput = document.getElementById('cameraInput');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const loadingBox = document.getElementById('loadingBox');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const editForm = document.getElementById('editForm');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const canvas = document.getElementById('processCanvas');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ctx = canvas.getContext('2d');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>renderList();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>cameraInput.addEventListener('change', async (e) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const file = e.target.files[0];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!file) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>loadingBox.classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>editForm.classList.add('hidden');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 1. 圖片前處理：將圖片轉為黑白高對比</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const img = new Image();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>img.src = URL.createObjectURL(file);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>await new Promise(resolve =&gt; img.onload = resolve);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>canvas.width = img.width;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>canvas.height = img.height;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.drawImage(img, 0, 0);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 轉灰階濾鏡邏輯</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; imgData.data.length; i += 4) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const avg = (imgData.data[i] + imgData.data[i+1] + imgData.data[i+2]) / 3;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const val = avg &gt; 128 ? 255 : 0; // 二值化 (黑白)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>imgData.data[i] = imgData.data[i+1] = imgData.data[i+2] = val;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.putImageData(imgData, 0, 0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const processedBlob = await new Promise(res =&gt; canvas.toBlob(res, 'image/jpeg'));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 2. 啟動辨識</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const worker = await Tesseract.createWorker({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>logger: m =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>if (m.status === 'recognizing text') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>document.getElementById('statusMsg').innerText = `解析中... ${Math.floor(m.progress * 100)}%`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>await worker.loadLanguage('chi_tra+eng');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>await worker.initialize('chi_tra+eng');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const { data: { text } } = await worker.recognize(processedBlob);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>smartParse(text);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>await worker.terminate();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>loadingBox.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>editForm.classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert('辨識失敗，請重試');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>loadingBox.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function smartParse(text) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>console.log("Original Text:", text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 清理亂碼，保留中英數</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const lines = text.split('\n')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.map(l =&gt; l.trim())</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.filter(l =&gt; l.length &gt; 1);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const email = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const phone = text.match(/09\d{2}-?\d{3}-?\d{3}|0\d{1,2}-?\d{3,4}-?\d{3,4}/);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('resEmail').value = email ? email[0] : "";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('resPhone').value = phone ? phone[0] : "";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 公司名判斷 (找常見結尾)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const companyKeywords = ["公司", "科技", "有限", "上濰", "MSP"];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let company = lines.find(l =&gt; companyKeywords.some(k =&gt; l.includes(k)));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// 姓名判斷 (通常是扣除公司後，長度 2-4 的中文)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let name = lines.find(l =&gt; /^[\u4e00-\u9fa5]{2,4}$/.test(l));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('resCompany').value = company || (lines[0] || "");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('resName').value = name || (lines[1] || "");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function saveCard() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const card = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>id: Date.now(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>name: document.getElementById('resName').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>company: document.getElementById('resCompany').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>phone: document.getElementById('resPhone').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>email: document.getElementById('resEmail').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>cat: document.getElementById('resCat').value</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const history = JSON.parse(localStorage.getItem('msp_cards') || '[]');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>history.unshift(card);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>localStorage.setItem('msp_cards', JSON.stringify(history));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderList();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>editForm.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderList() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const history = JSON.parse(localStorage.getItem('msp_cards') || '[]');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const container = document.getElementById('listContainer');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (history.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>container.innerHTML = '&lt;p class="text-center text-gray-400 py-10"&gt;尚無儲存的名片&lt;/p&gt;';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>container.innerHTML = history.map(c =&gt; `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="font-bold text-gray-800"&gt;${c.name}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-xs text-gray-400 mb-2"&gt;${c.company}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-sm font-mono text-blue-600"&gt;${c.phone}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex justify-between items-center mt-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-[10px] bg-slate-100 px-2 py-1 rounded text-gray-400"&gt;${c.cat}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;a href="tel:${c.phone}" class="text-xs text-blue-500 font-bold"&gt;撥打電話&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
